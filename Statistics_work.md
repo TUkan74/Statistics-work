@@ -41,7 +41,7 @@ def test_stationarity(timeseries):
         output["critical value (%s)" % key] = values
     print(output)
 ```    
-![Rolling Mean and Standart Deviation](Figure_1.png)
+![Rolling Mean and Standart Deviation](Images/Figure_1.png)
 ```    
 Results of Dickey-Fuller Test
 Test Statistics                  -0.842866
@@ -66,7 +66,7 @@ fig = result.plot()
 fig.set_size_inches(16, 9)
 plt.show()
 ```
-![TSR](Figure_2.png)
+![TSR](Images/Figure_2.png)
 
 ## 4. Odstránenie trendu a aplikácia logaritmickej transformácie
 Aby sme odstránili trend z dát, použijeme logaritmickú transformáciu a následne vykreslíme kĺzavý priemer a štandardnú odchýlku.
@@ -84,7 +84,7 @@ plt.legend()
 plt.show()
 ```
 
-![Standart Deviation](Moving_avarage.png)
+![Standart Deviation](Images/Moving_avarage.png)
 
 
 ## 5. Rozdelenie dát na trénovacie a testovacie sety
@@ -105,7 +105,7 @@ plt.legend()
 plt.show()
 ```
 
-![Train and Test Data](Train_Test_data.png)
+![Train and Test Data](Images/Train_Test_data.png)
 
 ## 6. Automatický výber parametrov pre ARIMA pomocou Auto ARIMA
 Použijeme funkciu auto_arima na automatické určenie najlepších parametrov pre model ARIMA na základe trénovacích dát.
@@ -157,7 +157,7 @@ model_autoARIMA.plot_diagnostics(figsize=(15, 8))
 plt.show()
 ```
 
-![Diagnostics](Diagnostics.png)
+![Diagnostics](Images/Diagnostics.png)
 
 ## 7. Trénovanie ARIMA modelu s upravenými parametrami
 Na základe výsledkov z auto_arima upravíme parametre modelu a znova ho natrénujeme. Potom predikujeme ceny akcií na základe testovacích dát.
@@ -185,7 +185,7 @@ plt.ylabel("Stock Price")
 plt.legend(loc="upper left")
 plt.show()
 ```
-![Prediction](Prediction.png)
+![Prediction](Images/Prediction.png)
 
 
 8. Vyhodnotenie modelu pomocou MSE a analýza rezíduí
@@ -209,7 +209,7 @@ plt.xlabel("Date")
 plt.ylabel("Residuals")
 plt.show()
 ```
-![Residuals](Residuals.png)
+![Residuals](Images/Residuals.png)
 ```python
 plt.figure(figsize=(10, 6))
 plt.hist(residuals, bins=20)
@@ -218,7 +218,7 @@ plt.xlabel("Residual")
 plt.ylabel("Frequency")
 plt.show()
 ```
-![Frequency](distribution_of_residuals.png)
+![Frequency](Images/distribution_of_residuals.png)
 ```python
 
 plt.figure(figsize=(15, 8))
@@ -237,7 +237,7 @@ plt.title("ARIMA Residuals")
 plt.tight_layout()
 plt.show()
 ```
-![Residual Diagnostics](More_Residuals.png)
+![Residual Diagnostics](Images/More_Residuals.png)
 
 # Záver
 Vyhodnotili sme model pomocou MSE a analyzovali sme rezíduá na identifikovanie potenciálnych problémov v predikcii. Aj keď má model jasné nedostatky a nedoporučil by som ho nikomu kto chce vložiť na burzu peniaze, predikoval cenu s dobrou presnosťou a nebol vôbec ďaleko. Je trochu optimista, no v realite v roku 2024, mu to vyšlo (dáta sú len do 2017). 
