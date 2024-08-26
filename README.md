@@ -1,10 +1,10 @@
-# Predikcia ceny akcií Tesla pomocou ARIMA a MSE
+# Tesla stock price prediction using ARIMA and MSE
 
-V tejto úlohe predikujeme cenu akcií spoločnosti Tesla (TSLA) pomocou modelu ARIMA (AutoRegressive Integrated Moving Average). Vyhodnotíme výkonnosť modelu pomocou strednej kvadratickej chyby (Mean Squared Error - MSE) a analyzujeme rezíduá.
+In this project, we predict the stock price of Tesla (TSLA) using the ARIMA (AutoRegressive Integrated Moving Average) model. We evaluate the performance of the model using the Mean Squared Error (MSE) and analyze the residuals.
 
-## 1. Načítanie a predspracovanie dát
+## 1. Loading preprocessed data
 
-Najprv načítame dáta o cenách akcií Tesla a zameriame sa na uzatváraciu cenu (`Close`). 
+We first need to load data about the close prices of the chosen stock
 
 ```python
 
@@ -12,8 +12,9 @@ data = pd.read_csv("tsla.us.txt", index_col="Date", parse_dates=True)
 data_close = data["Close"]
 ```
 
-## 2. Testovanie stacionarity dát
-Pred aplikovaním ARIMA modelu musíme zabezpečiť, že dáta sú stacionárne. Použijeme Dickey-Fullerov test na kontrolu stacionarity a zároveň vykreslíme kĺzavý priemer a štandardnú odchýlku.
+## 2. Data stationarity testing
+
+Before applying the ARIMA model, we need to ensure that the data is stationary. We will use the Dickey-Fuller test to check for stationarity while plotting the moving average and standard deviation.
 
 ```python
 def test_stationarity(timeseries):
@@ -56,8 +57,10 @@ critical value (10%)             -2.567600
 ```python
 test_stationarity(data_close)
 ```
-## 3. Rozklad časovej rady
-Rozložíme časovú radu na trend, sezónnosť a rezíduá pomocou dekompozície. Tým získame lepší prehľad o jednotlivých komponentoch časovej rady.
+
+## 3. Decomposition of the time series
+
+We decompose the time series into trend, seasonality and residuals using decomposition. This will give us a better overview of the individual components of the time series.
 
 ```python
 result = seasonal_decompose(data_close, model="multiplicative", period=30)
@@ -68,8 +71,9 @@ plt.show()
 ```
 ![TSR](Images/Figure_2.png)
 
-## 4. Odstránenie trendu a aplikácia logaritmickej transformácie
-Aby sme odstránili trend z dát, použijeme logaritmickú transformáciu a následne vykreslíme kĺzavý priemer a štandardnú odchýlku.
+## 4. Removal of trend and application of logarithmic transformation
+
+To remove the trend from the data, we apply a logarithmic transformation and then plot the moving average and standard deviation.
 
 ```python
 rcParams["figure.figsize"] = 10, 6
@@ -87,8 +91,8 @@ plt.show()
 ![Standart Deviation](Images/Moving_avarage.png)
 
 
-## 5. Rozdelenie dát na trénovacie a testovacie sety
-Dáta rozdelíme na trénovacie a testovacie sety, pričom 90% dát použijeme na trénovanie a 10% na testovanie.
+## 5. Division of data into training and test sets
+We will divide the data into training and testing sets, using 90% of the data for training and 10% for testing.
 
 ```python
 train_data, test_data = (
@@ -107,8 +111,8 @@ plt.show()
 
 ![Train and Test Data](Images/Train_Test_data.png)
 
-## 6. Automatický výber parametrov pre ARIMA pomocou Auto ARIMA
-Použijeme funkciu auto_arima na automatické určenie najlepších parametrov pre model ARIMA na základe trénovacích dát.
+## 6. Automatic selection of parameters for ARIMA using Auto ARIMA
+We will use the auto_arima function to automatically determine the best parameters for the ARIMA model based on the training data.
 
 ```python
 model_autoARIMA = pm.auto_arima(
@@ -159,8 +163,8 @@ plt.show()
 
 ![Diagnostics](Images/Diagnostics.png)
 
-## 7. Trénovanie ARIMA modelu s upravenými parametrami
-Na základe výsledkov z auto_arima upravíme parametre modelu a znova ho natrénujeme. Potom predikujeme ceny akcií na základe testovacích dát.
+## 7. Training the ARIMA model with modified parameters
+Based on the results from auto_arima, we adjust the parameters of the model and train it again. We then predict stock prices based on test data.
 
 ```python
 model = ARIMA(train_data, order=(1, 2, 2))  
@@ -188,8 +192,8 @@ plt.show()
 ![Prediction](Images/Prediction.png)
 
 
-8. Vyhodnotenie modelu pomocou MSE a analýza rezíduí
-Na vyhodnotenie modelu vypočítame strednú kvadratickú chybu (MSE) a analyzujeme rezíduá, aby sme identifikovali potenciálne nedostatky modelu.
+## 8. Model evaluation using MSE and analysis of residuals
+To evaluate the model, we calculate the mean squared error (MSE) and analyze the residuals to identify potential model deficiencies.
 
 ```python
 mse = mean_squared_error(test_data, fc)
@@ -239,5 +243,6 @@ plt.show()
 ```
 ![Residual Diagnostics](Images/More_Residuals.png)
 
-# Záver
-Vyhodnotili sme model pomocou MSE a analyzovali sme rezíduá na identifikovanie potenciálnych problémov v predikcii. Aj keď má model jasné nedostatky a nedoporučil by som ho nikomu kto chce vložiť na burzu peniaze, predikoval cenu s dobrou presnosťou a nebol vôbec ďaleko. Je trochu optimista, no v realite v roku 2024, mu to vyšlo (dáta sú len do 2017). 
+# Conclusion
+We evaluated the model using MSE and analyzed the residuals to identify potential problems in prediction. Although the model has clear flaws and I would not recommend it to anyone who wants to put money into the stock market, it predicted the price with good accuracy and was not far off at all. He is a bit optimistic, but in reality in 2024, he succeeded (the data is only up to 2017).
+
